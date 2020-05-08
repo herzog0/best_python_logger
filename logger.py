@@ -1,5 +1,8 @@
 import logging
+import logging.handlers
 import sys
+import os
+import gzip
 
 
 def color_cheat_sheet():
@@ -49,18 +52,42 @@ class _CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
+class GZipRotator:
+    def __call__(self, source, dest):
+        if not os.path.exists("logs"):
+            os.mkdir("logs")
+        os.rename(source, dest)
+        f_in = open(dest, 'rb')
+        f_out = gzip.open("%s.gz" % dest, 'wb')
+        f_out.writelines(f_in)
+        f_out.close()
+        f_in.close()
+        os.remove(dest)
+
+
 # Just import this function into your programs
 # "from logger import get_logger"
 # "logger = get_logger(__name__)"
 # Use the variable __name__ so the logger will print the file's name also
 
+
 def get_logger(name):
+    if not os.path.exists("logs"):
+        os.mkdir("logs")
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
+
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(_CustomFormatter())
+
+    fh = logging.handlers.TimedRotatingFileHandler('logs/kubermidas.log', when='midnight', backupCount=5)
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(_CustomFormatter())
+    fh.rotator = GZipRotator()
+
     logger.addHandler(ch)
+    logger.addHandler(fh)
     return logger
 
 
