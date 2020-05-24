@@ -1,8 +1,11 @@
 import logging
 import logging.handlers
+import time
+import gzip
+
+
 import sys
 import os
-import gzip
 
 
 def color_cheat_sheet():
@@ -54,15 +57,13 @@ class _CustomFormatter(logging.Formatter):
 
 class GZipRotator:
     def __call__(self, source, dest):
-        if not os.path.exists("logs"):
-            os.mkdir("logs")
-        os.rename(source, dest)
-        f_in = open(dest, 'rb')
-        f_out = gzip.open("%s.gz" % dest, 'wb')
-        f_out.writelines(f_in)
-        f_out.close()
-        f_in.close()
-        os.remove(dest)
+        if os.path.exists(source):
+            with open(source, "rb+") as sf:
+                data = sf.read()
+                compressed = gzip.compress(data, 9)
+                with open(dest+".gz", "wb") as df:
+                    df.write(compressed)
+            os.remove(source)
 
 
 # Just import this function into your programs
@@ -71,9 +72,9 @@ class GZipRotator:
 # Use the variable __name__ so the logger will print the file's name also
 
 
-def get_logger(name):
-    if not os.path.exists("logs"):
-        os.mkdir("logs")
+def get_logger(name, filename="logs/my_program.log", when="midnight", interval=1, backup_count=5):
+    if not os.path.exists("logs/"):
+        os.mkdir("logs/")
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 
@@ -81,7 +82,8 @@ def get_logger(name):
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(_CustomFormatter())
 
-    fh = logging.handlers.TimedRotatingFileHandler('logs/kubermidas.log', when='midnight', backupCount=5)
+    fh = logging.handlers.TimedRotatingFileHandler(filename=filename, when=when, interval=interval,
+                                                   backupCount=backup_count)
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(_CustomFormatter())
     fh.rotator = GZipRotator()
@@ -92,4 +94,14 @@ def get_logger(name):
 
 
 if __name__ == '__main__':
-    color_cheat_sheet()
+    test_logger = get_logger(name=__name__,
+                             filename="logs/test.log",
+                             when="S",
+                             interval=3,
+                             backup_count=3)
+
+    count = 0
+    while True:
+        count+=1
+        time.sleep(1)
+        test_logger.debug("hi, " + str(count))
