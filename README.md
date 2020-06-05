@@ -4,6 +4,12 @@ This is the best python logger.
 It doesn't require additional packages. 
 It is so great that deserved its own repo.
 
+# Installation
+```shell
+$ python3 -m pip install best-python-logger
+```
+
+
 Stolen and modified from [here](https://stackoverflow.com/a/56944256/12603421) and [here](https://github.com/cybergrind/safe_logger)
 ## Using the logger
 
