@@ -1,5 +1,7 @@
 import time
 from best_python_logger import get_logger
+import logging
+
 test_logger = get_logger(name=__name__,
                          filename="logs/test/dirs/test.log",
                          when="S",
@@ -9,7 +11,8 @@ test_logger = get_logger(name=__name__,
                          compress=True,
                          auto_colorized=True,
                          custom_format=None,
-                         only_visible_stream_auto_colorized=True)
+                         only_visible_stream_auto_colorized=True,
+                         level=logging.INFO)
 
 
 count = 0

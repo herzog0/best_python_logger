@@ -23,16 +23,19 @@ logger.critical("Damn blinks that doesn't work on most IDEs built-in terminals..
 ```python
 import time
 from best_python_logger import get_logger
+import logging
+
 test_logger = get_logger(name=__name__,
-                         filename="logs/test.log",
+                         filename="logs/test/dirs/test.log",
                          when="S",
                          interval=3,
                          backup_count=3,
                          visible_stream=True,
                          compress=True,
-                         auto_colorized=True, 
+                         auto_colorized=True,
                          custom_format=None,
-                         only_visible_stream_auto_colorized=False)
+                         only_visible_stream_auto_colorized=True,
+                         level=logging.INFO)
 
 count = 0
 while True:

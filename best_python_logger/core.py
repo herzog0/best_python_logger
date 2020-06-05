@@ -224,7 +224,8 @@ class __NullHandler(io.StringIO):
 
 
 def get_logger(name, filename="logs/my_program.log", when="midnight", interval=1, backup_count=5, visible_stream=False,
-               compress=True, auto_colorized=True, custom_format: str = None, only_visible_stream_auto_colorized=False):
+               compress=True, auto_colorized=True, custom_format: str = None, only_visible_stream_auto_colorized=False,
+               level=logging.INFO):
 
     if not os.path.exists(os.path.dirname(filename)):
         os.makedirs(os.path.dirname(filename))
@@ -237,7 +238,7 @@ def get_logger(name, filename="logs/my_program.log", when="midnight", interval=1
     #
     fh = _TimedRotatingFileHandlerSafe(filename=filename, when=when, interval=interval,
                                        backup_count=backup_count, compress=compress)
-    fh.setLevel(logging.DEBUG)
+    fh.setLevel(level)
     if only_visible_stream_auto_colorized:
         fh.setFormatter(CustomFormatter(auto_colorized=False, custom_format=custom_format))
     else:
@@ -249,7 +250,7 @@ def get_logger(name, filename="logs/my_program.log", when="midnight", interval=1
     #
     if visible_stream:
         ch = logging.StreamHandler()
-        ch.setLevel(logging.DEBUG)
+        ch.setLevel(level)
         ch.setFormatter(CustomFormatter(auto_colorized, custom_format))
         root.addHandler(ch)
 
