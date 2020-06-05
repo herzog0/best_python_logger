@@ -76,7 +76,7 @@ class TimedRotatingFileHandlerSafe(logging.handlers.TimedRotatingFileHandler):
             time_tuple = time.gmtime(t)
         else:
             time_tuple = time.localtime(t)
-        dfn = self.baseFilename + "." + time.strftime(self.suffix, time_tuple) + ".gz"
+        dfn = self.baseFilename + "." + time.strftime(self.suffix, time_tuple) + ".txt" + ".gz"
 
         # check if file is same
         try:
