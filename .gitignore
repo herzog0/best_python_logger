@@ -54,3 +54,4 @@ docs/_build/
 target/
 logs
 .idea
+update_package.sh
