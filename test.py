@@ -1,7 +1,7 @@
 import time
 from best_python_logger import get_logger
 test_logger = get_logger(name=__name__,
-                         filename="logs/teste/dirs/test.log",
+                         filename="logs/test/dirs/test.log",
                          when="S",
                          interval=3,
                          backup_count=3,
@@ -15,5 +15,5 @@ test_logger = get_logger(name=__name__,
 count = 0
 while True:
     count += 1
-    time.sleep(0.001)
+    time.sleep(0.01)
     test_logger.debug("hi, " + str(count))

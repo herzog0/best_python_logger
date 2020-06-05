@@ -1,26 +1,27 @@
-import setuptools
+from setuptools import find_packages, setup
+
+version = '1.0.0'
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-with open('requirements.txt') as f:
-    requirements = f.read().splitlines()
-
-setuptools.setup(
-    name="python-imageseach-drov0",
-    version="1.0.6",
-    install_requires=requirements,
-    author="Martin Lees",
-    author_email="drov.fr@protonmail.com",
-    description="A wrapper around openCv to perform image searching",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://github.com/drov0/python-imagesearch",
-    packages=setuptools.find_packages(),
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
-    python_requires='>=3.4',
-)
+setup(name='best_python_logger',
+      version=version,
+      description="A great python logger to fulfill your needs ",
+      long_description=long_description,
+      long_description_content_type="text/markdown",
+      classifiers=[
+            "Programming Language :: Python :: 3",
+            "License :: OSI Approved :: MIT License",
+            "Operating System :: Tested on Linux",
+      ],
+      python_requires='>=3.6',
+      keywords='logging handler concurrent logger log',
+      author='Teodoro B. Mendes',
+      author_email='teobmendes@gmail.com',
+      url='https://github.com/herzog0/best_python_logger',
+      license='MIT',
+      packages=find_packages(),
+      zip_safe=False,
+      install_requires=[]
+      )
