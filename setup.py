@@ -13,7 +13,7 @@ setup(name='best_python_logger',
       classifiers=[
             "Programming Language :: Python :: 3",
             "License :: OSI Approved :: MIT License",
-            "Operating System :: Tested on Linux",
+            "Operating System :: Unix",
       ],
       python_requires='>=3.6',
       keywords='logging handler concurrent logger log',
