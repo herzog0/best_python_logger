@@ -1,36 +1,14 @@
-import os
 import time
-import logging
-from safe_logger import TimedRotatingFileHandlerSafe
+from best_python_logger import get_logger
+test_logger = get_logger(name=__name__,
+                         filename="logs/test.log",
+                         when="S",
+                         interval=3,
+                         backup_count=3,
+                         visible_stream=True)
 
-class NullHandler(logging.Handler):
-    def emit(self, record):
-        pass
-    def write(self, *args, **kwargs):
-        pass
-
-
-LOG_FILE = 'logs/debug.log'
-ERR_FILE = 'logs/error.log'
-
-FORMAT = '[%(asctime)s] [%(levelname)s] [PID: '+str(os.getpid())+'] [%(name)s]:  %(message)s'
-FORMATTER = logging.Formatter(FORMAT)
-
-
-logging.basicConfig(level=logging.DEBUG, stream=NullHandler())
-root = logging.root
-log_handler = TimedRotatingFileHandlerSafe(LOG_FILE, when='MIDNIGHT')
-log_handler.setLevel(logging.DEBUG)
-log_handler.setFormatter(FORMATTER)
-root.addHandler(log_handler)
-
-err_handler = TimedRotatingFileHandlerSafe(ERR_FILE, when='MIDNIGHT')
-err_handler.setLevel(logging.ERROR)
-err_handler.setFormatter(FORMATTER)
-root.addHandler(err_handler)
-
-lg = logging.getLogger('testme')
+count = 0
 while True:
-    lg.debug('test debug')
-    lg.error('test error')
-    time.sleep(0.5)
+    count += 1
+    time.sleep(1)
+    test_logger.debug("hi, " + str(count))

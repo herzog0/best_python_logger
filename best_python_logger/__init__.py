@@ -7,6 +7,7 @@ import gzip
 import time
 import sys
 import os
+import io
 
 
 _lock = threading.RLock()
@@ -134,7 +135,7 @@ def color_cheat_sheet():
             write("\n")
 
 
-class _CustomFormatter(logging.Formatter):
+class __CustomFormatter(logging.Formatter):
     """Logging Formatter to add colors and count warning / errors"""
 
     grey = "\x1b[0;37m"
@@ -170,38 +171,32 @@ class _CustomFormatter(logging.Formatter):
 # "from logger import get_logger"
 # "logger = get_logger(__name__)"
 # Use the variable __name__ so the logger will print the file's name also
+class __NullHandler(io.StringIO):
+    def emit(self, record):
+        pass
+
+    def write(self, *args, **kwargs):
+        pass
 
 
-def get_logger(name, filename="logs/my_program.log", when="midnight", interval=1, backup_count=5):
+def get_logger(name, filename="logs/my_program.log", when="midnight", interval=1, backup_count=5, visible_stream=False):
+
     if not os.path.exists("logs/"):
         os.mkdir("logs/")
 
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
-
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(_CustomFormatter())
+    logging.basicConfig(level=logging.DEBUG, stream=__NullHandler())
+    root = logging.root
 
     fh = TimedRotatingFileHandlerSafe(filename=filename, when=when, interval=interval,
                                       backup_count=backup_count)
     fh.setLevel(logging.DEBUG)
-    fh.setFormatter(_CustomFormatter())
+    fh.setFormatter(__CustomFormatter())
+    root.addHandler(fh)
 
-    logger.addHandler(ch)
-    logger.addHandler(fh)
-    return logger
+    if visible_stream:
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.DEBUG)
+        ch.setFormatter(__CustomFormatter())
+        root.addHandler(ch)
 
-
-if __name__ == '__main__':
-    test_logger = get_logger(name=__name__,
-                             filename="logs/test.log",
-                             when="S",
-                             interval=3,
-                             backup_count=3)
-
-    count = 0
-    while True:
-        count += 1
-        time.sleep(1)
-        test_logger.debug("hi, " + str(count))
+    return logging.getLogger(name)
