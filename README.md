@@ -4,16 +4,18 @@ This is the best python logger.
 It doesn't require additional packages. 
 It is so great that deserved its own repo.
 
+Stolen and modified from [here](https://stackoverflow.com/a/56944256/12603421) and [here](https://github.com/cybergrind/safe_logger)
+
+
 # Installation
 ```shell
 $ python3 -m pip install best-python-logger
 ```
 
 
-Stolen and modified from [here](https://stackoverflow.com/a/56944256/12603421) and [here](https://github.com/cybergrind/safe_logger)
-## Using the logger
+# Usage
 
-## Simplest usage
+### Simplest usage
 ```python
 from best_python_logger import get_logger
 logger = get_logger(__name__)
@@ -25,7 +27,7 @@ logger.error("Ok, we are in trouble.")
 logger.critical("Damn blinks that doesn't work on most IDEs built-in terminals..")
 ```
 
-## Master usage
+### Master usage
 ```python
 import time
 from best_python_logger import get_logger
@@ -51,7 +53,7 @@ while True:
 
 ## README of one of the sources 
 
-(I though it would be useful for some people to read the comments of the owner of safe_logger package)
+(I though it would be useful for some people to read the comments of the owner of safe_logger package, from which I got the concurrency fix part)
 ```
 ## Description
 
