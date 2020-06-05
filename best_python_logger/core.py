@@ -230,7 +230,7 @@ def get_logger(name, filename="logs/my_program.log", when="midnight", interval=1
     if not os.path.exists(os.path.dirname(filename)):
         os.makedirs(os.path.dirname(filename))
 
-    logging.basicConfig(level=logging.DEBUG, stream=__NullHandler())
+    logging.basicConfig(level=level, stream=__NullHandler())
     root = logging.root
 
     #
